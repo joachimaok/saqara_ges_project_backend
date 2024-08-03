@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { Project, ProjectDocument } from '../project.schema';
 import { CreateProjectDto } from './create-project.dto';
+import { User } from 'src/auth/schemas/user.schema';
 
 @Injectable()
 export class CreateProjectCommand {
@@ -11,8 +12,14 @@ export class CreateProjectCommand {
     private readonly projectModel: Model<ProjectDocument>,
   ) {}
 
-  async handle(createProjectDto: CreateProjectDto): Promise<Project> {
-    const createedProject = new this.projectModel(createProjectDto);
-    return createedProject.save();
+  async handle(
+    createProjectDto: CreateProjectDto,
+    user: User,
+  ): Promise<Project> {
+    const createProjectDtoWithUserId = Object.assign(createProjectDto, {
+      user: user._id,
+    });
+    const createdProject = new this.projectModel(createProjectDtoWithUserId);
+    return createdProject.save();
   }
 }

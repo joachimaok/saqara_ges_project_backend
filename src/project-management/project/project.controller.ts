@@ -1,17 +1,23 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { CreateProjectCommand } from './create-project/create-project.command';
 import { Project } from './project.schema';
 import { CreateProjectDto } from './create-project/create-project.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('projects')
+@ApiBearerAuth()
 @Controller('projects')
 export class ProjectController {
   constructor(private readonly createProjectCommand: CreateProjectCommand) {}
 
   @ApiOperation({ summary: 'Create a new project' })
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
-    return this.createProjectCommand.handle(createProjectDto);
+  @UseGuards(AuthGuard())
+  create(
+    @Body() createProjectDto: CreateProjectDto,
+    @Req() req,
+  ): Promise<Project> {
+    return this.createProjectCommand.handle(createProjectDto, req.user);
   }
 }

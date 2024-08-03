@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, SchemaTypes } from 'mongoose';
+import { User } from 'src/auth/schemas/user.schema';
 
 export type ProjectDocument = Project & Document;
 
@@ -16,6 +17,9 @@ export class Project {
 
   @Prop({ default: Date.now })
   updatedAt: Date;
+
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
+  user: User;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);
