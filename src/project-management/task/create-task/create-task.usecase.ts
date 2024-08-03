@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class CreateTaskCommand {
+export class CreateTaskUseCase {
   constructor(
     @InjectModel(Task.name) private readonly taskModel: Model<TaskDocument>,
   ) {}

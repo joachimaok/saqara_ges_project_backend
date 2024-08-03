@@ -6,7 +6,7 @@ import { CreateProjectDto } from './create-project.dto';
 import { User } from 'src/auth/schemas/user.schema';
 
 @Injectable()
-export class CreateProjectCommand {
+export class CreateProjectUseCase {
   constructor(
     @InjectModel(Project.name)
     private readonly projectModel: Model<ProjectDocument>,
