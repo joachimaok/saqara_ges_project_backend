@@ -7,6 +7,7 @@ import {
   Put,
   Param,
   Get,
+  Delete,
 } from '@nestjs/common';
 import { CreateProjectUseCase } from './create-project/create-project.usecase';
 import { Project } from './project.schema';
@@ -16,6 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UpdateProjectDto } from './update-project/update-project.dto';
 import { UpdateProjectUseCase } from './update-project/update-project.usecase';
 import { FindProjectUseCase } from './find-project/find-project.usecase';
+import { DeleteProjectUseCase } from './delete-project/delete-project.usecase';
 
 @ApiTags('projects')
 @ApiBearerAuth()
@@ -25,6 +27,7 @@ export class ProjectController {
     private readonly createProjectUseCase: CreateProjectUseCase,
     private readonly updateProjectUseCase: UpdateProjectUseCase,
     private readonly findProjectUseCase: FindProjectUseCase,
+    private readonly deleteProjectUseCase: DeleteProjectUseCase,
   ) {}
 
   @ApiOperation({ summary: 'Create a new project' })
@@ -50,15 +53,22 @@ export class ProjectController {
 
   @ApiOperation({ summary: 'Get all projects for the current user' })
   @UseGuards(AuthGuard())
-  @Get('user')
+  @Get()
   findAllByUser(@Req() req): Promise<Project[]> {
     return this.findProjectUseCase.findAllByUser(req.user._id);
   }
 
   @ApiOperation({ summary: 'Get a project by ID for the current user' })
   @UseGuards(AuthGuard())
-  @Get('user/:id')
+  @Get(':id')
   findOneByUser(@Param('id') id: string, @Req() req): Promise<Project> {
     return this.findProjectUseCase.findOneByUser(id, req.user._id);
+  }
+
+  @ApiOperation({ summary: 'Delete a project by ID' })
+  @UseGuards(AuthGuard())
+  @Delete(':id')
+  delete(@Param('id') id: string, @Req() req): Promise<void> {
+    return this.deleteProjectUseCase.handle(id, req.user);
   }
 }

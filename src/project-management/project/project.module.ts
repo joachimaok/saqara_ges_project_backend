@@ -6,6 +6,7 @@ import { Project, ProjectSchema } from './project.schema';
 import { AuthModule } from 'src/auth/auth.module';
 import { UpdateProjectUseCase } from './update-project/update-project.usecase';
 import { FindProjectUseCase } from './find-project/find-project.usecase';
+import { DeleteProjectUseCase } from './delete-project/delete-project.usecase';
 
 @Module({
   imports: [
@@ -13,6 +14,11 @@ import { FindProjectUseCase } from './find-project/find-project.usecase';
     MongooseModule.forFeature([{ name: Project.name, schema: ProjectSchema }]),
   ],
   controllers: [ProjectController],
-  providers: [CreateProjectUseCase, UpdateProjectUseCase, FindProjectUseCase],
+  providers: [
+    CreateProjectUseCase,
+    UpdateProjectUseCase,
+    FindProjectUseCase,
+    DeleteProjectUseCase,
+  ],
 })
 export class ProjectModule {}
