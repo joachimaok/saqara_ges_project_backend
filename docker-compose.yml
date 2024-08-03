@@ -2,17 +2,17 @@ services:
   mongodb:
     image: mongo
     container_name: saqara_mongo
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: sqr_root
-    #   MONGO_INITDB_ROOT_PASSWORD: sqrpwd123
-    #   MONGO_INITDB_DATABASE: sqr_db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sqr_root
+      MONGO_INITDB_ROOT_PASSWORD: sqrpwd123
+      MONGO_INITDB_DATABASE: sqr_db
     ports:
       - "28017:27017"
     env_file:
       - env/.env.default
     volumes:
       - mongo-data:/data/db
-      # - ./src/database/mongo-init/init.js:/docker-entrypoint-initdb.d/init.js:ro
 
   nestjs:
     build: .
