@@ -19,6 +19,9 @@ services:
     container_name: saqara_backend
     ports:
       - "3000:3000"
+    environment:
+      ENV: development
+    command: yarn start:dev
     depends_on:
       - mongodb
 

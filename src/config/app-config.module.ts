@@ -5,7 +5,7 @@ import { envValidationSchema } from './env.schema';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: [`env/.env.default`],
+      envFilePath: [`env/.env.${process.env.ENV}`, `env/.env.default`],
       validationSchema: envValidationSchema,
       validationOptions: {
         allowUnknown: true,
