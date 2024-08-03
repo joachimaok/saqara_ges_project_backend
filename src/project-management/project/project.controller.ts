@@ -24,7 +24,7 @@ export class ProjectController {
   constructor(
     private readonly createProjectUseCase: CreateProjectUseCase,
     private readonly updateProjectUseCase: UpdateProjectUseCase,
-    private readonly findProjectUserUseCase: FindProjectUseCase,
+    private readonly findProjectUseCase: FindProjectUseCase,
   ) {}
 
   @ApiOperation({ summary: 'Create a new project' })
@@ -52,6 +52,13 @@ export class ProjectController {
   @UseGuards(AuthGuard())
   @Get('user')
   findAllByUser(@Req() req): Promise<Project[]> {
-    return this.findProjectUserUseCase.findAllByUser(req.user._id);
+    return this.findProjectUseCase.findAllByUser(req.user._id);
+  }
+
+  @ApiOperation({ summary: 'Get a project by ID for the current user' })
+  @UseGuards(AuthGuard())
+  @Get('user/:id')
+  findOneByUser(@Param('id') id: string, @Req() req): Promise<Project> {
+    return this.findProjectUseCase.findOneByUser(id, req.user._id);
   }
 }
