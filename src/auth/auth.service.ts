@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
@@ -14,28 +19,40 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(registerDto: RegisterDto): Promise<{ token: string }> {
+  async register(
+    registerDto: RegisterDto,
+  ): Promise<{ token: string; message: string; user: User }> {
     const { username, password } = registerDto;
+    const user = await this.userModel.findOne({ username });
+    if (user) {
+      throw new HttpException('User already exists', 400);
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await this.userModel.create({
+    const createdUser = await this.userModel.create({
       username,
       password: hashedPassword,
     });
-    const token = this.jwtService.sign({ id: user._id });
-    return { token };
+    const token = this.jwtService.sign({ id: createdUser._id });
+    return {
+      token,
+      message: 'User registered successfully',
+      user: createdUser,
+    };
   }
 
-  async login(loginDto: LoginDto): Promise<{ token: string }> {
+  async login(
+    loginDto: LoginDto,
+  ): Promise<{ token: string; message: string; user: User }> {
     const { username, password } = loginDto;
     const user = await this.userModel.findOne({ username });
     if (!user) {
-      throw new UnauthorizedException('Invalid username or password');
+      throw new NotFoundException('Invalid username or password');
     }
     const isPasswordMatched = await bcrypt.compare(password, user.password);
     if (!isPasswordMatched) {
       throw new UnauthorizedException('Invalid username or password');
     }
     const token = this.jwtService.sign({ id: user._id });
-    return { token };
+    return { token, message: 'User logged in successfully', user };
   }
 }
