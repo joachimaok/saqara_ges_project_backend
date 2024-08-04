@@ -1,6 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -25,7 +26,7 @@ export class CreateTaskUseCase {
     const { projectId, name, description } = createTaskDto;
     const project = await this.projectModel.findById(projectId).exec();
     if (!project) {
-      throw new NotFoundException(`Project with ID ${projectId} not found`);
+      throw new BadRequestException(`Project with ID ${projectId} not found`);
     }
     if (project.user.toString() !== user._id.toString()) {
       throw new ForbiddenException(
