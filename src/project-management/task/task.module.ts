@@ -4,11 +4,15 @@ import { TaskController } from './task.controller';
 import { CreateTaskUseCase } from './create-task/create-task.usecase';
 import { Task, TaskSchema } from './task.schema';
 import { AuthModule } from 'src/auth/auth.module';
+import { Project, ProjectSchema } from '../project/project.schema';
 
 @Module({
   imports: [
     AuthModule,
-    MongooseModule.forFeature([{ name: Task.name, schema: TaskSchema }]),
+    MongooseModule.forFeature([
+      { name: Task.name, schema: TaskSchema },
+      { name: Project.name, schema: ProjectSchema },
+    ]),
   ],
   controllers: [TaskController],
   providers: [CreateTaskUseCase],

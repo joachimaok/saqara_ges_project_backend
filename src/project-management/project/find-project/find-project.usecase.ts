@@ -11,7 +11,10 @@ export class FindProjectUseCase {
   ) {}
 
   async findAllByUser(userId: string): Promise<Project[]> {
-    return this.projectModel.find({ user: userId }).populate('user').exec();
+    return this.projectModel
+      .find({ user: userId })
+      .populate(['user', 'tasks'])
+      .exec();
   }
 
   async findOneByUser(id: string, userId: string): Promise<Project> {

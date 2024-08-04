@@ -2,10 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 import { Project } from '../project/project.schema';
 
-export type TaskDocument = Task & Document;
-
 @Schema()
-export class Task {
+export class Task extends Document {
   @Prop({ required: true })
   name: string;
 
@@ -26,3 +24,4 @@ export class Task {
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);
+export type TaskDocument = Task & Document;
