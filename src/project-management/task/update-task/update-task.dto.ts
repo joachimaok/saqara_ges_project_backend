@@ -1,19 +1,15 @@
 import { IsString, IsBoolean, IsOptional } from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import { CreateTaskDto } from '../create-task/create-task.dto';
 
-export class UpdateTaskDto {
-  @ApiPropertyOptional({ example: 'Updated Task Name' })
-  @IsString()
+export class UpdateTaskDto extends PartialType(CreateTaskDto) {
+  @ApiProperty({ example: 'New Task Name', required: false })
   @IsOptional()
+  @IsString()
   name?: string;
 
-  @ApiPropertyOptional({ example: 'Updated Task Description' })
+  @ApiProperty({ example: 'New Task Description', required: false })
+  @IsOptional()
   @IsString()
-  @IsOptional()
   description?: string;
-
-  @ApiPropertyOptional({ example: true })
-  @IsBoolean()
-  @IsOptional()
-  completed?: boolean;
 }

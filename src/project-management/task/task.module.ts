@@ -5,6 +5,7 @@ import { CreateTaskUseCase } from './create-task/create-task.usecase';
 import { Task, TaskSchema } from './task.schema';
 import { AuthModule } from 'src/auth/auth.module';
 import { Project, ProjectSchema } from '../project/project.schema';
+import { UpdateTaskUseCase } from './update-task/update-task.usecase';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { Project, ProjectSchema } from '../project/project.schema';
     ]),
   ],
   controllers: [TaskController],
-  providers: [CreateTaskUseCase],
+  providers: [CreateTaskUseCase, UpdateTaskUseCase],
 })
 export class TaskModule {}
