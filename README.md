@@ -1,73 +1,102 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Backend API for Project Management
 
 ## Description
+This is the backend API for the project management application. It is built with NestJS and provides endpoints for user authentication, project management, and task management.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Features
+- User Registration and Login
+- JWT Authentication
+- CRUD operations for Projects
+- CRUD operations for Tasks
+- Swagger documentation
+
+## Prerequisites
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Node.js](https://nodejs.org/) (optional, if running without Docker)
 
 ## Installation
 
+### Clone the repository
 ```bash
-$ pnpm install
+git clone https://github.com/joachimaok/saqara_ges_project_backend.git
+cd your-repo
 ```
 
-## Running the app
+## Environment Variables
+Use files `env/.env.${process.env.ENV}` or `env/.env.default` in the root directory and configure the following environment variables:
 
-```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+```
+MONGO_URI=mongodb://your-mongo-url:27017/your-database
+JWT_SECRET=your-secret-key
+JWT_EXPIRES=1d
 ```
 
-## Test
+## Running with Docker
+Make sure Docker and Docker Compose are installed on your machine.
+
+### 1. Build and start the Docker containers:
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+docker compose up --build
 ```
 
-## Support
+### 2. Stop the Docker containers:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+docker compose down
+```
 
-## Stay in touch
+## Running without Docker
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 1. Install dependencies:
 
-## License
+```bash
+pnpm install
+```
 
-Nest is [MIT licensed](LICENSE).
+### 2. Run the application:
+
+```bash
+pnpm start:dev
+```
+
+# Usage
+
+## Swagger Documentation
+
+Once the application is running, you can access the API documentation at:
+
+```bash
+http://localhost:3000/api
+```
+
+## Endpoints
+
+- Auth
+
+  - POST `/auth/register` - Register a new user
+  - POST `/auth/login` - Login a user and get a JWT token
+
+- Projects
+
+  - GET `/projects` - Get all projects for the authenticated user
+  - POST `/projects` - Create a new project
+  - PUT `/projects/:id` - Update a project by ID
+  - DELETE `/projects/:id` - Delete a project by ID
+
+- Tasks
+
+  - GET `/tasks` - Get all tasks for the authenticated user
+  - POST `/tasks` - Create a new task
+  - PUT `/tasks/:id` - Update a task by ID
+  - PATCH `/tasks/:id/complete` - Mark a task as complete by ID
+  - DELETE `/tasks/:id` - Delete a task by ID
+
+# Running Tests
+
+To run tests, use the following command:
+
+```bash
+pnpm test
+```
