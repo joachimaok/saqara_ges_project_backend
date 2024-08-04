@@ -11,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { IAuthResponse } from './interfaces/auth-response.interface';
 
 @Injectable()
 export class AuthService {
@@ -19,9 +20,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(
-    registerDto: RegisterDto,
-  ): Promise<{ token: string; message: string; user: User }> {
+  async register(registerDto: RegisterDto): Promise<IAuthResponse> {
     const { username, password } = registerDto;
     const user = await this.userModel.findOne({ username });
     if (user) {
@@ -40,9 +39,7 @@ export class AuthService {
     };
   }
 
-  async login(
-    loginDto: LoginDto,
-  ): Promise<{ token: string; message: string; user: User }> {
+  async login(loginDto: LoginDto): Promise<IAuthResponse> {
     const { username, password } = loginDto;
     const user = await this.userModel.findOne({ username });
     if (!user) {
