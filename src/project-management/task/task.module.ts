@@ -6,6 +6,7 @@ import { Task, TaskSchema } from './task.schema';
 import { AuthModule } from 'src/auth/auth.module';
 import { Project, ProjectSchema } from '../project/project.schema';
 import { UpdateTaskUseCase } from './update-task/update-task.usecase';
+import { DeleteTaskUseCase } from './delete-task/delete-task.usecase';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { UpdateTaskUseCase } from './update-task/update-task.usecase';
     ]),
   ],
   controllers: [TaskController],
-  providers: [CreateTaskUseCase, UpdateTaskUseCase],
+  providers: [CreateTaskUseCase, UpdateTaskUseCase, DeleteTaskUseCase],
 })
 export class TaskModule {}
