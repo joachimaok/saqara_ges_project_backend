@@ -1,0 +1,29 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: saqara_mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sqr_root
+      MONGO_INITDB_ROOT_PASSWORD: sqrpwd123
+      MONGO_INITDB_DATABASE: sqr_db
+    ports:
+      - "28017:27017"
+    env_file:
+      - env/.env.default
+    volumes:
+      - mongo-data:/data/db
+
+  nestjs:
+    build: .
+    container_name: saqara_backend
+    ports:
+      - "3000:3000"
+    environment:
+      ENV: development
+    command: yarn start:dev
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo-data:
