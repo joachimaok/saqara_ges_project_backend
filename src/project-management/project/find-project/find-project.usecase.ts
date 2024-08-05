@@ -11,16 +11,13 @@ export class FindProjectUseCase {
   ) {}
 
   async findAllByUser(userId: string): Promise<Project[]> {
-    return this.projectModel
-      .find({ user: userId })
-      .populate(['user', 'tasks'])
-      .exec();
+    return this.projectModel.find({ user: userId }).exec();
   }
 
   async findOneByUser(id: string, userId: string): Promise<Project> {
     const project = await this.projectModel
       .findOne({ _id: id, user: userId })
-      .populate('user')
+      .populate(['user', 'tasks'])
       .exec();
     if (!project) {
       throw new NotFoundException(
